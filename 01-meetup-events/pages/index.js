@@ -1,9 +1,9 @@
 import { getFeaturedEvents } from "../helpers/api-util";
 import EventList from "../components/events/event-list";
-
 import Head from "next/head";
+import NewsletterRegistration from "../components/input/newsletter-registration";
 
-function HomePage(props) {
+export default function HomePage(props) {
     const { events } = props;
 
     return (
@@ -15,14 +15,19 @@ function HomePage(props) {
                 />
                 <title>NextJS Events</title>
             </Head>
+            <NewsletterRegistration />
             <EventList items={events} />
         </div>
     );
 }
 
-export default HomePage;
-
 export async function getStaticProps() {
     const featuredEvents = await getFeaturedEvents();
-    return { props: { events: featuredEvents }, revalidate: 1800 };
+
+    return {
+        props: {
+            events: featuredEvents,
+        },
+        revalidate: 1800,
+    };
 }
