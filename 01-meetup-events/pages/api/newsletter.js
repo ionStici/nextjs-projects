@@ -1,23 +1,26 @@
-import fs from 'fs';
-import path from 'path';
+import { MongoClient } from 'mongodb';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const email = req.body;
-        console.log(email);
+        const userEmail = req.body;
 
-        const filePath = path.join(process.cwd(), 'data', 'emails.json');
-        const data = JSON.parse(fs.readFileSync(filePath));
+        if (!userEmail || !userEmail.includes('@')) {
+            res.status(422).json({ message: 'Invalid email address.' });
+            return;
+        }
 
-        data.push(email);
-        fs.writeFileSync(filePath, JSON.stringify(data));
+        const client = await MongoClient.connect(
+            'mongodb+srv://ionsticidev:0it8RDyEZQbvrljF@cluster0.ybiwzkl.mongodb.net/events?retryWrites=true&w=majority'
+        );
 
-        res.status(201).json({ message: 'Success!', email });
-    } else {
-        res.status(200).json({ message: 'Hello World!' });
-    }
+        const db = client.db();
 
-    if (req.method === 'GET') {
-        console.log('GET');
+        await db.collection('newsletter').insertOne({ email: userEmail });
+
+        client.close();
+
+        res.status(201).json({ message: 'Signed up!' });
     }
 }
+
+/* 0it8RDyEZQbvrljF */

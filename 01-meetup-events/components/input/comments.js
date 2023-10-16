@@ -7,22 +7,21 @@ import classes from './comments.module.css';
 function Comments(props) {
     const { eventId } = props;
     const [showComments, setShowComments] = useState(false);
-
-    const [comments, setComments] = useState();
+    const [comments, setComments] = useState([]);
 
     useEffect(() => {
-        fetch(`/api/${eventId}`)
-            .then((res) => res.json())
-            .then((data) => setComments(data));
-    }, [comments]);
+        if (showComments) {
+            fetch(`/api/comments/${eventId}`)
+                .then((res) => res.json())
+                .then((data) => setComments(data.comments));
+        }
+    }, [showComments]);
 
     function toggleCommentsHandler() {
         setShowComments((prevStatus) => !prevStatus);
     }
 
     function addCommentHandler(commentData) {
-        commentData.id = eventId;
-
         fetch(`/api/${eventId}`, {
             method: 'POST',
             body: JSON.stringify(commentData),
@@ -39,7 +38,7 @@ function Comments(props) {
                 {showComments ? 'Hide' : 'Show'} Comments
             </button>
             {showComments && <NewComment onAddComment={addCommentHandler} />}
-            {showComments && <CommentList comments={comments} />}
+            {showComments && <CommentList items={comments} />}
         </section>
     );
 }

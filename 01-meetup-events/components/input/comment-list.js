@@ -1,16 +1,16 @@
 import classes from './comment-list.module.css';
 
 function CommentList(props) {
-    const { comments } = props.comments;
+    const { items } = props;
 
     return (
         <ul className={classes.comments}>
-            {comments.map((comment, i) => {
+            {items.map((item) => {
                 return (
-                    <li key={i}>
-                        <p>{comment.text}</p>
+                    <li key={item.id}>
+                        <p>{item.text}</p>
                         <div>
-                            By <address>{comment.name}</address>
+                            By <address>{item.name}</address>
                         </div>
                     </li>
                 );

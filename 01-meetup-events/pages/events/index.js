@@ -1,9 +1,9 @@
-import Head from "next/head";
-import { getAllEvents } from "../../helpers/api-util";
-import { Fragment } from "react";
-import { useRouter } from "next/router";
-import EventList from "../../components/events/event-list";
-import EventsSearch from "../../components/events/events-search";
+import Head from 'next/head';
+import { getAllEvents } from '../../helpers/api-util';
+import { Fragment } from 'react';
+import { useRouter } from 'next/router';
+import EventList from '../../components/events/event-list';
+import EventsSearch from '../../components/events/events-search';
 
 export default function AllEventsPage(props) {
     const router = useRouter();
