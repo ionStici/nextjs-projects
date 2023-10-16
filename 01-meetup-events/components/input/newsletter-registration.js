@@ -1,14 +1,22 @@
 import classes from './newsletter-registration.module.css';
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
+import NotificationContext from '../../store/notification-context';
 
 function NewsletterRegistration() {
     const emailInput = useRef(null);
+    const notificationCtx = useContext(NotificationContext);
 
     function registrationHandler(event) {
         event.preventDefault();
 
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const email = emailInput.current.value;
+
+        notificationCtx.showNotification({
+            title: 'Signing up...',
+            message: 'Registering for newsletter',
+            status: 'pending',
+        });
 
         if (regex.test(email)) {
             console.log('Valid email');
@@ -18,9 +26,33 @@ function NewsletterRegistration() {
                 body: JSON.stringify(email),
                 headers: { 'Content-Type': 'application/json' },
             })
-                .then((res) => res.json())
-                .then((data) => console.log(data))
-                .catch((err) => console.log(err.message));
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+
+                    return res.json().then((data) => {
+                        throw Error(data.message || 'Something went wrong!');
+                    });
+                })
+                .then((data) => {
+                    console.log(data);
+
+                    notificationCtx.showNotification({
+                        title: 'Success!',
+                        message: 'Successfully registered for newsletter!',
+                        status: 'success',
+                    });
+                })
+                .catch((err) => {
+                    console.log(err.message);
+
+                    notificationCtx.showNotification({
+                        title: 'Error!',
+                        message: err.message || 'Something went wrong!',
+                        status: 'error',
+                    });
+                });
         } else {
             console.log('Invalid email');
         }
