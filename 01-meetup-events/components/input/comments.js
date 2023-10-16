@@ -22,7 +22,7 @@ function Comments(props) {
     }
 
     function addCommentHandler(commentData) {
-        fetch(`/api/${eventId}`, {
+        fetch(`/api/comments/${eventId}`, {
             method: 'POST',
             body: JSON.stringify(commentData),
             headers: { 'Content-Type': 'application/json' },
