@@ -2,48 +2,23 @@ import { Fragment } from "react";
 
 import Hero from "../components/home-page/hero";
 import FeaturedPosts from "../components/home-page/featured-posts";
+import { getFeaturedPosts } from "../lib/posts-util";
 
-const DUMMY_POSTS = [
-  //   { image, title, date, excerpt, slug },
-  {
-    image: "getting-started-nextjs.png",
-    slug: "getting-started-width-nextjs",
-    title: "Getting Started with Next.JS",
-    date: "2022-02-10",
-    excerpt:
-      "NextJS is the React framework for production - it makes building fullstack React apps and sites a breeze and ships with built-in SSR.",
-  },
-  {
-    image: "getting-started-nextjs.png",
-    slug: "getting-started-width-nextjs2",
-    title: "Getting Started with Next.JS",
-    date: "2022-02-10",
-    excerpt:
-      "NextJS is the React framework for production - it makes building fullstack React apps and sites a breeze and ships with built-in SSR.",
-  },
-  {
-    image: "getting-started-nextjs.png",
-    slug: "getting-started-width-nextjs3",
-    title: "Getting Started with Next.JS",
-    date: "2022-02-10",
-    excerpt:
-      "NextJS is the React framework for production - it makes building fullstack React apps and sites a breeze and ships with built-in SSR.",
-  },
-  {
-    image: "nextjs-file-based-routing.png",
-    slug: "nextjs-file-based-routing",
-    title: "Getting Started with Next.JS",
-    date: "2022-02-10",
-    excerpt:
-      "NextJS is the React framework for production - it makes building fullstack React apps and sites a breeze and ships with built-in SSR.",
-  },
-];
-
-export default function HomePage() {
+export default function HomePage(props) {
   return (
     <Fragment>
       <Hero />
-      <FeaturedPosts posts={DUMMY_POSTS} />
+      <FeaturedPosts posts={props.posts} />
     </Fragment>
   );
+}
+
+export function getStaticProps() {
+  const featuredPosts = getFeaturedPosts();
+
+  return {
+    props: {
+      posts: featuredPosts,
+    },
+  };
 }
