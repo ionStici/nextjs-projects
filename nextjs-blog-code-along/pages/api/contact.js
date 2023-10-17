@@ -25,9 +25,12 @@ export default async function handler(req, res) {
 
     let client;
 
+    const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.ybiwzkl.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
+
     try {
       client = await MongoClient.connect(
-        'mongodb+srv://ionsticidev:le7dFGV9QPqnN1up@cluster0.ybiwzkl.mongodb.net/my-site?retryWrites=true&w=majority'
+        connectionString
+        // 'mongodb+srv://ionsticidev:le7dFGV9QPqnN1up@cluster0.ybiwzkl.mongodb.net/my-site?retryWrites=true&w=majority'
       );
     } catch (error) {
       res.status(500).json({ message: 'Could not connect to database.' });
@@ -52,5 +55,3 @@ export default async function handler(req, res) {
       .json({ message: 'Successfully stored message!', message: newMessage });
   }
 }
-
-// le7dFGV9QPqnN1up

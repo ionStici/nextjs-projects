@@ -1,11 +1,16 @@
-import Image from "next/image";
-import classes from "./post-content.module.css";
-import PostHeader from "./post-header";
+import Image from 'next/image';
+import classes from './post-content.module.css';
+import PostHeader from './post-header';
 
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from 'react-markdown';
 
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import atomDark from 'react-syntax-highlighter/dist/cjs/styles/prism/atom-dark';
+import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
+import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
+
+SyntaxHighlighter.registerLanguage('js', js);
+SyntaxHighlighter.registerLanguage('css', css);
 
 export default function PostContent(props) {
   const { post } = props;
@@ -16,7 +21,7 @@ export default function PostContent(props) {
     p(paragraph) {
       const { node } = paragraph;
 
-      if (node.children[0].tagName === "img") {
+      if (node.children[0].tagName === 'img') {
         const image = node.children[0];
 
         return (
@@ -36,7 +41,7 @@ export default function PostContent(props) {
 
     code(code) {
       const { className, children } = code;
-      const language = className.split("-")[1];
+      const language = className.split('-')[1];
 
       return (
         <SyntaxHighlighter
@@ -55,5 +60,3 @@ export default function PostContent(props) {
     </article>
   );
 }
-
-// https://github.com/mschwarzmueller/nextjs-course-code/compare/3b99cd0...a9fb64b#diff-3db12f592d8426efcf0708bcecc9d9a283394c9089879adcb7bdca47ac060ce8L34
