@@ -8,6 +8,8 @@ export default function ProfilePage() {
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
 
+  //   console.log(context.req);
+
   if (!session) {
     return {
       redirect: {
